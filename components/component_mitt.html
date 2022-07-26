@@ -14,6 +14,8 @@
 <script type="module">
   import 'https://unpkg.com/mitt/dist/mitt.umd.js'; // mitt
 
+  const emitter = mitt();
+
   const app = Vue.createApp({});
 
   app.component('card-emit', {
@@ -28,7 +30,8 @@
     },
     methods: {
       sendData() {
-
+        console.log('sendData');
+        emitter.emit('sendProduct', this.product)
       }
     },
     template: `<div class="card" style="width: 18rem;">
@@ -45,7 +48,10 @@
       }
     },
     created() {
-
+      emitter.on('sendProduct', (data) => {
+        console.log('card-on', data);
+        this.item = data;
+      })
     },
     template: `<div class="card" style="width: 18rem;">
       <div class="card-body">
